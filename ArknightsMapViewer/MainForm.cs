@@ -17,10 +17,16 @@ namespace ArknightsMapViewer
         private LevelView curLevelView;
         private RouteView curRouteView;
 
+        private Vector2 scaleFactor;
+
         public MainForm()
         {
             Instance = this;
             InitializeComponent();
+            
+            Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+            //scaleFactor = new Vector2(1, 1);
+            scaleFactor = new Vector2(g.DpiX * 0.01f, g.DpiY * 0.01f);
         }
 
         ~MainForm()
@@ -215,7 +221,7 @@ namespace ArknightsMapViewer
             {
                 Name = fileName,
                 LevelData = levelData,
-                MapDrawer = new WinformMapDrawer(pictureBox1, levelData.map),
+                MapDrawer = new WinformMapDrawer(pictureBox1, scaleFactor, levelData.map),
             };
 
             int mapWidth = levelData.map.GetLength(0);
@@ -243,7 +249,7 @@ namespace ArknightsMapViewer
                     {
                         RouteIndex = i,
                         Route = route,
-                        RouteDrawer = new WinformRouteDrawer(pictureBox1, route, pathFinding, mapWidth, mapHeight),
+                        RouteDrawer = new WinformRouteDrawer(pictureBox1, route, pathFinding, mapWidth, mapHeight, scaleFactor),
                     };
                     routeNode.Nodes.Add($"startPosition: {route.startPosition}");
                     for (int j = 0; j < route.checkPoints.Count; j++)
@@ -426,7 +432,7 @@ namespace ArknightsMapViewer
             int mapWidth = map.GetLength(0);
             int mapHeight = map.GetLength(1);
 
-            Position position = Helper.PointToPosition(point, mapHeight);
+            Position position = Helper.PointToPosition(point, mapHeight, scaleFactor);
             position.col = position.col.Clamp(0, mapWidth - 1);
             position.row = position.row.Clamp(0, mapHeight - 1);
             Tile tile = map[position.col, position.row];

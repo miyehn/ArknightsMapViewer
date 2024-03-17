@@ -14,18 +14,24 @@ namespace ArknightsMapViewer
         public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
 
-        public WinformMapDrawer(PictureBox pictureBox, Tile[,] map)
+        private Vector2 MapScaleFactor;
+
+        public WinformMapDrawer(PictureBox pictureBox, Vector2 scaleFactor, Tile[,] map)
         {
             PictureBox = pictureBox;
             Map = map;
 
             MapWidth = map.GetLength(0);
             MapHeight = map.GetLength(1);
+
+            MapScaleFactor = scaleFactor;
         }
 
         public void InitCanvas()
         {
-            Bitmap bitmap = new Bitmap(MapWidth * GlobalDefine.TILE_PIXLE, MapHeight * GlobalDefine.TILE_PIXLE);
+            //Bitmap bitmap = new Bitmap(MapWidth * GlobalDefine.TILE_PIXLE, MapHeight * GlobalDefine.TILE_PIXLE);
+            Vector2Int tileSize = Helper.GetTileSize(MapScaleFactor);
+            Bitmap bitmap = new Bitmap(MapWidth * tileSize.x, MapHeight * tileSize.y);
             PictureBox.BackgroundImage?.Dispose();
             PictureBox.BackgroundImage = bitmap;
             PictureBox.Width = bitmap.Width;
@@ -63,8 +69,9 @@ namespace ArknightsMapViewer
 
             Bitmap bitmap = (Bitmap)PictureBox.BackgroundImage;
 
-            int length = GlobalDefine.TILE_PIXLE;
-            Rectangle rectangle = new Rectangle(colIndex * length, (MapHeight - rowIndex - 1) * length, length, length);
+            //int length = GlobalDefine.TILE_PIXLE;
+            Vector2Int tileSize = Helper.GetTileSize(MapScaleFactor);
+            Rectangle rectangle = new Rectangle(colIndex * tileSize.x, (MapHeight - rowIndex - 1) * tileSize.y, tileSize.x, tileSize.y);
 
             DrawUtil.FillRectangle(bitmap, rectangle, color);
             DrawUtil.DrawRectangle(bitmap, rectangle);

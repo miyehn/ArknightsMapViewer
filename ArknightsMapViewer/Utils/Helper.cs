@@ -304,19 +304,24 @@ namespace ArknightsMapViewer
         }
         #endregion
 
-        public static Point PositionToPoint(Position position, Offset offset, int mapHeight)
+        public static Vector2Int GetTileSize(Vector2 scaleFactor)
         {
-            int x = (int)((position.col + offset.x + 0.5f) * GlobalDefine.TILE_PIXLE);
-            //int y = (int)((position.row + offset.y + 0.5f) * GlobalDefine.TILE_PIXLE);
-            int y = (int)((mapHeight - (position.row + offset.y) - 1 + 0.5f) * GlobalDefine.TILE_PIXLE);
+            return new Vector2Int((int)(GlobalDefine.TILE_PIXLE * scaleFactor.x), (int)(GlobalDefine.TILE_PIXLE * scaleFactor.y));
+        }
+
+        public static Point PositionToPoint(Position position, Offset offset, int mapHeight, Vector2 scaleFactor)
+        {
+            Vector2Int tileSize = GetTileSize(scaleFactor);
+            int x = (int)((position.col + offset.x + 0.5f) * tileSize.x);
+            int y = (int)((mapHeight - (position.row + offset.y) - 1 + 0.5f) * tileSize.y);
             return new Point(x, y);
         }
 
-        public static Position PointToPosition(Point point, int mapHeight)
+        public static Position PointToPosition(Point point, int mapHeight, Vector2 scaleFactor)
         {
-            int x = point.X / GlobalDefine.TILE_PIXLE;
-            //int y = point.Y / GlobalDefine.TILE_PIXLE;
-            int y = -(point.Y / GlobalDefine.TILE_PIXLE) + mapHeight - 1;
+            Vector2Int tileSize = GetTileSize(scaleFactor);
+            int x = point.X / tileSize.x;
+            int y = -(point.Y / tileSize.y) + mapHeight - 1;
             return new Position
             {
                 col = x,
