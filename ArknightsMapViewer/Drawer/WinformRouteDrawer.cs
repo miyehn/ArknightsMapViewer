@@ -14,13 +14,16 @@ namespace ArknightsMapViewer
         public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
 
-        public WinformRouteDrawer(PictureBox pictureBox, Route route, PathFinding pathFinding, int mapWidth, int mapHeight)
+        private Vector2 MapScaleFactor;
+
+        public WinformRouteDrawer(PictureBox pictureBox, Route route, PathFinding pathFinding, int mapWidth, int mapHeight, Vector2 scaleFactor)
         {
             PictureBox = pictureBox;
             Route = route;
             PathFinding = pathFinding;
             MapWidth = mapWidth;
             MapHeight = mapHeight;
+            MapScaleFactor = scaleFactor;
         }
 
         public void InitCanvas()
@@ -259,7 +262,7 @@ namespace ArknightsMapViewer
 
         private Point GetPoint(Position position, Offset offset)
         {
-            return Helper.PositionToPoint(position, offset, MapHeight);
+            return Helper.PositionToPoint(position, offset, MapHeight, MapScaleFactor);
         }
     }
 }
