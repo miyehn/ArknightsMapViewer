@@ -14,7 +14,7 @@ namespace ArknightsMapViewer
         public int MapWidth { get; private set; }
         public int MapHeight { get; private set; }
 
-        private Vector2 MapScaleFactor;
+        protected Vector2 MapScaleFactor;
 
         public WinformMapDrawer(PictureBox pictureBox, Vector2 scaleFactor, Tile[,] map)
         {
@@ -43,7 +43,7 @@ namespace ArknightsMapViewer
             PictureBox.Refresh();
         }
 
-        public void DrawMap()
+        public virtual void DrawMap()
         {
             InitCanvas();
             for (int row = 0; row < MapHeight; row++)

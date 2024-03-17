@@ -221,7 +221,7 @@ namespace ArknightsMapViewer
             {
                 Name = fileName,
                 LevelData = levelData,
-                MapDrawer = new WinformMapDrawer(pictureBox1, scaleFactor, levelData.map),
+                MapDrawer = new TexturedMapDrawer(pictureBox1, scaleFactor, levelData.map),
             };
 
             int mapWidth = levelData.map.GetLength(0);
