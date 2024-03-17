@@ -23,23 +23,16 @@ namespace ArknightsMap
                 }
             }
 
-
             routes = new List<Route>();
             for (int i = 0; i < rawLevelData.routes.Count; i++)
             {
-                if (rawLevelData.routes[i].motionMode != MotionMode.E_NUM)
-                {
-                    routes.Add(rawLevelData.routes[i]);
-                }
+                routes.Add(rawLevelData.routes[i]);
             }
 
             extraRoutes = new List<Route>();
             for (int i = 0; i < rawLevelData.extraRoutes.Count; i++)
             {
-                if (rawLevelData.extraRoutes[i].motionMode != MotionMode.E_NUM)
-                {
-                    extraRoutes.Add(rawLevelData.extraRoutes[i]);
-                }
+                extraRoutes.Add(rawLevelData.extraRoutes[i]);
             }
 
             waves = new List<Wave>(rawLevelData.waves);
