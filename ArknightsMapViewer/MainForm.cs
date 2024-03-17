@@ -244,6 +244,8 @@ namespace ArknightsMapViewer
                 for (int i = 0; i < routes.Count; i++)
                 {
                     Route route = routes[i];
+                    if (route.motionMode == MotionMode.E_NUM) continue;
+                    
                     TreeNode routeNode = routesNode.Nodes.Add($"{title} #{i}");
                     routeNode.Tag = new RouteView()
                     {
