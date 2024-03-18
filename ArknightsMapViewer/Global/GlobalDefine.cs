@@ -5,6 +5,14 @@ using ArknightsMap;
 
 namespace ArknightsMapViewer
 {
+    public struct TileInfo
+    {
+        public Color backgroundColor;
+        public string text;
+        public Color textColor;
+        public Image sprite;
+        public Vector2 spritePivot;
+    }
     public static class GlobalDefine
     {
         public const int TILE_PIXLE = 50;
@@ -17,8 +25,7 @@ namespace ArknightsMapViewer
         public static readonly Color LINE_COLOR = Color.Red;
         public static readonly Color CIRCLE_COLOR = Color.FromArgb(255, 118, 118, 118);
 
-        //TileDefine.txt
-        public readonly static Dictionary<string, Color> TileColor = new Dictionary<string, Color>();
-        public readonly static Dictionary<string, (string, Color)> TileString = new Dictionary<string, (string, Color)>();
+        //TileDefine.csv
+        public readonly static Dictionary<string, TileInfo> TileInfos = new Dictionary<string, TileInfo>();
     }
 }

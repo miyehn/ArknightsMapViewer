@@ -1,14 +1,14 @@
-tileKey	tileColor	tileText	textColor			备注：所有tileKey来源于所有地图文件全局搜索统计
-tile_start	#e70f32					
-tile_flystart	#e70f32					
-tile_end	#359dde					
-tile_forbidden	#161616					
-tile_floor	#343434					
-tile_road	#767676					
-tile_wall	#bbbbbb					
-tile_telin	#161616	in	#b0b0b0			
-tile_telout	#161616	out	#b0b0b0			
-tile_hole	#141414	hole	#b0b0b0			
+tileKey, tileColor, tileText, textColor, tileImagePath, pivotX, pivotY
+tile_start, #e70f32,,, tile_start.png
+tile_flystart, #e70f32					
+tile_end, #359dde,,,tile_end.png
+tile_forbidden, #161616					
+tile_floor, #343434
+tile_road, #767676,,,tile_road.png
+tile_wall, #bbbbbb,,,tile_wall.png
+tile_telin, #161616, in, #b0b0b0			
+tile_telout, #161616, out, #b0b0b0			
+tile_hole, #141414, hole, #b0b0b0			
 tile_corrosion						
 tile_grass						
 tile_volcano						
