@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ArknightsMapViewer</RootNamespace>
     <AssemblyName>ArknightsMapViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -74,6 +74,7 @@
     <Compile Include="ArknightsMap\Interface\IMapDrawer.cs" />
     <Compile Include="ArknightsMap\Interface\IDrawer.cs" />
     <Compile Include="ArknightsMap\Interface\IRouteDrawer.cs" />
+    <Compile Include="Drawer\TexturedMapDrawer.cs" />
     <Compile Include="Drawer\WinformMapDrawer.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
@@ -149,6 +150,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)TileDefine.txt" "$(TargetDir)" /y</PostBuildEvent>
+    <PostBuildEvent>
+      xcopy "$(ProjectDir)TileDefine.csv" "$(TargetDir)" /y
+      if not exist "$(TargetDir)TileAssets" mkdir "$(TargetDir)TileAssets"
+      xcopy "$(ProjectDir)TileAssets" "$(TargetDir)TileAssets" /y /e
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

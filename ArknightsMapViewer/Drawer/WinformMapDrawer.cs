@@ -43,10 +43,10 @@ namespace ArknightsMapViewer
             PictureBox.Refresh();
         }
 
-        public virtual void DrawMap()
+        public void DrawMap()
         {
             InitCanvas();
-            for (int row = 0; row < MapHeight; row++)
+            for (int row = MapHeight - 1; row >= 0 ; row--)
             {
                 for (int col = 0; col < MapWidth; col++)
                 {
@@ -56,38 +56,43 @@ namespace ArknightsMapViewer
             RefreshCanvas();
         }
 
-        private void DrawTile(int rowIndex, int colIndex)
+        protected virtual void DrawTile(int rowIndex, int colIndex)
         {
             Tile tile = Map[colIndex, rowIndex];
-            if (!GlobalDefine.TileColor.TryGetValue(tile.tileKey, out Color color))
+            if (!GlobalDefine.TileInfos.TryGetValue(tile.tileKey, out TileInfo tileInfo))
             {
-                //Console.WriteLine("Undefined Tile: " + tile.tileKey);
                 MainForm.Instance.Log("Undefined Tile: " + tile.tileKey, MainForm.LogType.Warning);
-                color = Color.White;
+                tileInfo = new TileInfo
+                {
+                    backgroundColor = Color.White,
+                    text = "",
+                    textColor = Color.Black
+                };
             }
-            GlobalDefine.TileString.TryGetValue(tile.tileKey, out (string, Color) tileString);
-
+            DrawTileBasic(rowIndex, colIndex, tileInfo);
+        }
+        
+        protected void DrawTileBasic(int rowIndex, int colIndex, TileInfo tileInfo)
+        {
             Bitmap bitmap = (Bitmap)PictureBox.BackgroundImage;
-
-            //int length = GlobalDefine.TILE_PIXLE;
             Vector2Int tileSize = Helper.GetTileSize(MapScaleFactor);
             Rectangle rectangle = new Rectangle(colIndex * tileSize.x, (MapHeight - rowIndex - 1) * tileSize.y, tileSize.x, tileSize.y);
 
-            DrawUtil.FillRectangle(bitmap, rectangle, color);
+            DrawUtil.FillRectangle(bitmap, rectangle, tileInfo.backgroundColor);
             DrawUtil.DrawRectangle(bitmap, rectangle);
 
             //Draw TileText
-            if (!string.IsNullOrEmpty(tileString.Item1))
+            if (!string.IsNullOrEmpty(tileInfo.text))
             {
-                DrawUtil.DrawString(bitmap, tileString.Item1, rectangle, GlobalDefine.TEXT_FONT, tileString.Item2);
+                DrawUtil.DrawString(bitmap, tileInfo.text, rectangle, GlobalDefine.TEXT_FONT, tileInfo.textColor);
             }
 
             //Draw Index
             string indexText = GetIndexText(colIndex, rowIndex);
-            DrawUtil.DrawString(bitmap, indexText, rectangle, GlobalDefine.INDEX_FONT, GlobalDefine.TEXT_COLOR, TextFormatFlags.Right | TextFormatFlags.Bottom);
+            DrawUtil.DrawString(bitmap, indexText, rectangle, GlobalDefine.INDEX_FONT, Color.DimGray, TextFormatFlags.Left | TextFormatFlags.Top);
         }
 
-        private string GetIndexText(int colIndex, int rowIndex)
+        protected string GetIndexText(int colIndex, int rowIndex)
         {
             return $"{colIndex},{rowIndex}";
             //return $"{(char)('A' + rowIndex)}{colIndex + 1}";

@@ -123,7 +123,14 @@ public class TableReader
             throw new ArgumentException("Line Count Error");
         }
 
-        string[] GetValues(string line) => line.Split('\t');
+        string[] GetValues(string line)
+        {
+            string[] values = line.Split(',');
+            for (int i = 0; i < values.Length; i++) {
+                values[i] = values[i].Trim();
+            }
+            return values;
+        }
 
         //Init titles
         colIndexDict = new Dictionary<string, int>();
@@ -173,9 +180,9 @@ public class TableReader
             }
 
             string[] values = new string[maxColIndex + 1];
-            for (int j = 0; j <= maxColIndex; j++)
-            {
-                values[j] = line[j];
+            for (int j = 0; j <= maxColIndex; j++) {
+                if (j < line.Length) values[j] = line[j];
+                else values[j] = "";
             }
             datas.Add(key, new TableLine(key, values, colIndexDict));
         }

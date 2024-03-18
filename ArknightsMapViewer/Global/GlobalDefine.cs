@@ -49,6 +49,15 @@ namespace ArknightsMapViewer
         public ColorConfig Color = new ColorConfig();
     }
 
+    public struct TileInfo
+    {
+        public Color backgroundColor;
+        public string text;
+        public Color textColor;
+        public Image sprite;
+        public Vector2 spritePivot;
+    }
+    
     public static class GlobalDefine
     {
         public static int TILE_PIXLE = 50;
@@ -67,8 +76,7 @@ namespace ArknightsMapViewer
         public static Color CIRCLE_COLOR = Color.FromArgb(255, 118, 118, 118);
         public static Color LENGTH_COLOR = Color.Green;
 
-        //TileDefine.txt
-        public readonly static Dictionary<string, Color> TileColor = new Dictionary<string, Color>();
-        public readonly static Dictionary<string, (string, Color)> TileString = new Dictionary<string, (string, Color)>();
+        //TileDefine.csv
+        public readonly static Dictionary<string, TileInfo> TileInfos = new Dictionary<string, TileInfo>();
     }
 }

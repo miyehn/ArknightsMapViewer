@@ -441,7 +441,7 @@ namespace ArknightsMapViewer
 
             string text = $"[Tile: {position}]\n" + tile.ToString();
 
-            if (!GlobalDefine.TileColor.ContainsKey(tile.tileKey))
+            if (!GlobalDefine.TileInfos.ContainsKey(tile.tileKey))
             {
                 text += "\n(Warning: Undefined Tile)";
             }

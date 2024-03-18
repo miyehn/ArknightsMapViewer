@@ -57,6 +57,12 @@ namespace ArknightsMapViewer
             TextRenderer.DrawText(graphics, text, font, rectangle, color ?? Color.Black, textFormatFlags);
         }
 
+        public static void DrawImage(Bitmap bitmap, Image image, Rectangle rectangle)
+        {
+            using Graphics graphics = GetGraphics(bitmap);
+            graphics.DrawImage(image, rectangle);
+        }
+
         private static Graphics GetGraphics(Bitmap bitmap)
         {
             Graphics graphics = Graphics.FromImage(bitmap);

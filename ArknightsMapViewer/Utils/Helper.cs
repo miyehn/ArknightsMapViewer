@@ -70,46 +70,63 @@ namespace ArknightsMapViewer
                 return color;
             }
 
-            string path = Environment.CurrentDirectory + "/TileDefine.txt";
+            string path = Environment.CurrentDirectory + "/TileDefine.csv";
 
             try
             {
                 TableReader tableReader = new TableReader(path);
+                Dictionary<string, Image> images = new Dictionary<string, Image>(); // relative path -> image
                 tableReader.ForEach((key, line) =>
                 {
                     string tileKey = key;
                     Color tileColor = ParseColor(line["tileColor"]);
                     string tileText = line["tileText"];
                     Color textColor = ParseColor(line["textColor"]);
+                    string tileImagePath = line["tileImagePath"];
+                    
+                    Image image = null;
+                    float pivotX = 0; float pivotY = 0;
+
+                    if (!string.IsNullOrEmpty(tileImagePath)) {
+                        tileImagePath = tileImagePath.Trim();
+                        if (!images.TryGetValue(tileImagePath, out image)) {
+                            string fullAssetPath = Environment.CurrentDirectory + "/TileAssets/" + tileImagePath;
+                            image = Image.FromFile(fullAssetPath);
+                            images.Add(tileImagePath, image);
+                            MainForm.Instance.Log("add image: " + tileImagePath);
+                        }
+                        if (!float.TryParse(line["pivotX"].Trim(), out pivotX)) {
+                            pivotX = 0;
+                        }
+                        if (!float.TryParse(line["pivotY"].Trim(), out pivotY)) {
+                            pivotY = 0;
+                        }
+                    }
+                    
+                    TileInfo info = new TileInfo {
+                        backgroundColor = tileColor,
+                        text = tileText,
+                        textColor = textColor,
+                        sprite = image,
+                        spritePivot = new Vector2(pivotX, pivotY)
+                    };
 
                     if (!string.IsNullOrEmpty(tileKey))
                     {
-                        if (!GlobalDefine.TileColor.ContainsKey(tileKey))
+                        if (!GlobalDefine.TileInfos.ContainsKey(tileKey))
                         {
-                            GlobalDefine.TileColor.Add(tileKey, tileColor);
+                            GlobalDefine.TileInfos.Add(tileKey, info);
                         }
                         else
                         {
-                            GlobalDefine.TileColor[tileKey] = tileColor;
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(tileText))
-                    {
-                        if (!GlobalDefine.TileString.ContainsKey(tileKey))
-                        {
-                            GlobalDefine.TileString.Add(tileKey, (tileText, textColor));
-                        }
-                        else
-                        {
-                            GlobalDefine.TileString[tileKey] = (tileText, textColor);
+                            GlobalDefine.TileInfos[tileKey] = info;
                         }
                     }
                 });
             }
             catch(Exception ex)
             {
-                string errorMsg = $"TileDefine.txt Read Error, {ex.Message}";
+                string errorMsg = $"TileDefine.csv Read Error, {ex.Message}";
                 MainForm.Instance.Log(errorMsg, MainForm.LogType.Warning);
                 //MessageBox.Show(errorMsg, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
