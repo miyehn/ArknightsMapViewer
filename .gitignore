@@ -2,6 +2,6 @@
 .svn/
 obj/
 
-.idea/
 maps/
 TileAsset.clip
+ArknightsMapViewer/bin
